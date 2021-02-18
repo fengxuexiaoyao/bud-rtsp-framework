@@ -1,0 +1,24 @@
+spring:
+  # 环境 dev|test|prod
+  profiles:
+    active: dev
+  jackson:
+      time-zone: GMT+8    # 返回时间会少8小时，这个配置解决这个问题
+      date-format: yyyy-MM-dd HH:mm:ss  # 返回long型时间转换格式
+  application:
+    name: bud-netty-server
+
+
+server:
+  port: 80
+
+netty:
+  rtsp-port: 54000
+  rtsp-idletime: 600
+  rtp-port: 554
+  rtp-idletime: 10
+  rtcp-idletime: 10
+  worker-group: 5
+  play-file-path: D:\\
+  fps: 30
+  mtu: 1400
