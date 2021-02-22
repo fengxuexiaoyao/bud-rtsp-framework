@@ -1,4 +1,4 @@
-# bud-video-framework
+# bud-rtsp-framework
 使用netty实现rtsp服务
 
 目前主要支持h264编码格式的视频文件播放
