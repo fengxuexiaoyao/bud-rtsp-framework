@@ -63,8 +63,6 @@ public class BudScreenRecordThread extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            dudQueueBean.setNaluCodeWriteEnd(true);
-            log.info("nalu data write end!");
             try {
                 if (grabber!=null){
                     grabber.stop();

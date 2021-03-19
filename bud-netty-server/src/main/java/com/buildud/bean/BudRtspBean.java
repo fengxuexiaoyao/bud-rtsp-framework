@@ -4,12 +4,14 @@ package com.buildud.bean;
 import com.buildud.config.RtspConfig;
 import com.buildud.queue.BudByteQueue;
 import com.buildud.queue.RtpBudQueue;
+import com.buildud.tools.DateUtils;
 import io.netty.channel.Channel;
 
 import java.net.InetSocketAddress;
 
 public class BudRtspBean<E> extends AbstractQueueBean<E>{
 
+    private BudByteQueue byteQueue;
     private BudByteQueue naluQueue;
     private RtpBudQueue rtpQueue;
 
@@ -51,12 +53,24 @@ public class BudRtspBean<E> extends AbstractQueueBean<E>{
     public void init(){
         createRtpQueue();
         createNaluQueue();
+        createByteQueue();
+        initTime();
     }
 
     @Override
     public void clean(){
         cleanRtpQueue();
         cleanNaluQueue();
+        cleanByteQueue();
+        cleanTime();
+    }
+
+    public void initTime(){
+        time = DateUtils.getMillisecondToInt();
+    }
+
+    public void cleanTime(){
+        time = null;
     }
 
     @Override
@@ -90,6 +104,21 @@ public class BudRtspBean<E> extends AbstractQueueBean<E>{
     }
 
     @Override
+    public void createByteQueue(){
+        byteQueue = new BudByteQueue();
+    }
+
+    @Override
+    public boolean cleanByteQueue() {
+        if (byteQueue!=null&&byteQueue.isEmpty()){
+            byteQueue.clear();
+            byteQueue = null;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public RtpBudQueue getRtpQueue() {
         return rtpQueue;
     }
@@ -98,6 +127,11 @@ public class BudRtspBean<E> extends AbstractQueueBean<E>{
     @Override
     public BudByteQueue getNaluQueue() {
         return naluQueue;
+    }
+
+    @Override
+    public BudByteQueue getByteQueue() {
+        return byteQueue;
     }
 
     @Override

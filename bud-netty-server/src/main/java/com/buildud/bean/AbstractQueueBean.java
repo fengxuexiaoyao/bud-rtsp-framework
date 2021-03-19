@@ -12,10 +12,13 @@ public abstract class AbstractQueueBean<E>{
     public abstract void clean();
     public abstract void createRtpQueue();
     public abstract void createNaluQueue();
+    public abstract void createByteQueue();
     public abstract boolean cleanRtpQueue();
     public abstract RtpBudQueue getRtpQueue();
     public abstract boolean cleanNaluQueue();
     public abstract BudByteQueue getNaluQueue();
+    public abstract boolean cleanByteQueue();
+    public abstract BudByteQueue getByteQueue();
 
     public abstract Short getSeqNum();
     public abstract void setSeqNum(Short seqNum);

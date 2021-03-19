@@ -41,14 +41,15 @@ public class BudNaluToRtpThread extends Thread {
                 }
 
                 buffer = dudQueueBean.getNaluQueue().poll();
-                if (buffer==null){
+                if (buffer==null||buffer.length<1){
                     continue;
                 }
+
                 RtpUtils.naluToRtp(buffer,dudQueueBean);
+
             }
             log.info("rtp data write start!");
         }catch (Exception e){
-            e.printStackTrace();
             log.error(e.getMessage(),e.getCause());
         }finally {
             dudQueueBean.setRtpCodeWriteEnd(true);

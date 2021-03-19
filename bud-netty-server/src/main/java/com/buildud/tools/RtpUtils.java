@@ -96,11 +96,11 @@ public class RtpUtils {
             if (isAutoTime){
                 dudQueueBean.autoIncrementTime();
             }
-            try {
-                Thread.sleep(1000/ RtspConfig.fps);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(1000/ RtspConfig.fps-10);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             return;
         }
         //分片处理nalu
@@ -213,11 +213,11 @@ public class RtpUtils {
         //设置时间自增
         dudQueueBean.autoIncrementTime();
 
-        try {
-            Thread.sleep(1000 / RtspConfig.fps);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(1000 / RtspConfig.fps-10);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -234,7 +234,9 @@ public class RtpUtils {
             byteBuf.writeBytes(rtpPack);
             DatagramPacket datagramPacket = new DatagramPacket(byteBuf, dudQueueBean.getDstVideoRtpAddr());
 //            dudQueueBean.getRtpQueue().put(datagramPacket);
+
             dudQueueBean.getSendChannel().writeAndFlush(datagramPacket);
+
         }catch (Exception e){
             e.printStackTrace();
             log.error(e.getMessage(),e.getCause());

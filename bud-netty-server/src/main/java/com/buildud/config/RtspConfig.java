@@ -15,7 +15,7 @@ public class RtspConfig {
     public static Integer rtcpIdletime=1000;
     public static Integer workerGroup=5;							//worker的线程数
     public static String playFilePath="D:\\\\";  //播放文件路径
-    public static int fps = 30;								//默认帧率
+    public static int fps = 20;								//默认帧率
     public static int mtu=1442;                             //最大传输单元
     public static int rtpSendSleepTime = 1000/fps;                //rtp包发送间隔休眠时间
 

@@ -208,6 +208,9 @@ public class BudRtspHandler extends SimpleChannelInboundHandler<FullHttpRequest>
             BudScreenRecordThread screenRecordThread = new BudScreenRecordThread(rtspQueueBean);
             screenRecordThread.start();
 
+            BudByteToNaluThread byteToNaluThread = new BudByteToNaluThread(rtspQueueBean);
+            byteToNaluThread.start();
+
 //            BudNaluToRtpThread naluToRtpThread = new BudNaluToRtpThread(rtspQueueBean);
 //            naluToRtpThread.start();
 //
