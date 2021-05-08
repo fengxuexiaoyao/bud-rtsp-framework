@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 import com.buildud.handler.*;
 
 @Configuration
-public class RtspNettyServer implements ApplicationListener<ApplicationStartedEvent> {
+public class BudRtspNettyUdpServer implements ApplicationListener<ApplicationStartedEvent> {
 
-    public static final Logger log = LoggerFactory.getLogger(RtspNettyServer.class);
+    public static final Logger log = LoggerFactory.getLogger(BudRtspNettyUdpServer.class);
 
     private static Bootstrap udpRtpstrap = new Bootstrap();
     private static Bootstrap udpRtcpstrap = new Bootstrap();
