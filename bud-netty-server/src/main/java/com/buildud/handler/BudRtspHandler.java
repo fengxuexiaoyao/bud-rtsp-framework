@@ -118,13 +118,15 @@ public class BudRtspHandler extends SimpleChannelInboundHandler<FullHttpRequest>
         InetSocketAddress addr = (InetSocketAddress) ctx.channel().localAddress();
 
         //默认是H264
-        String sdp = String.format("c=IN IP4 0.0.0.0 \nm=video 0 RTP/AVP 96\na=rtpmap:96 H264/90000\n"
-                        + "a=fmtp:96 packetization-mode=1;profile-level-id=640015;sprop-parameter-sets=Z2QAFazZQIA1sBEAAAMAAQAAAwA8DxYtlg==,a0vjyyLA\n"
+        String sdp = String.format("v=0 \no=- "
+                        + chn.id().toString()
+                        + " 1 IN IP4 0.0.0.0\nm=video 0 RTP/AVP 96\na=rtpmap:96 H264/90000\n"
+//                        + "a=fmtp:96 packetization-mode=1;profile-level-id=640015;sprop-parameter-sets=Z2QAFazZQIA1sBEAAAMAAQAAAwA8DxYtlg==,a0vjyyLA\n"
                         + "a=control:track1\n"
 //                        + "m=audio 0 RTP/AVP 97\na=rtpmap:97 MPEG4-GENERIC/16000\n"
 //                        + "a=fmtp:97 streamtype=5; profile-level-id=15; mode=AAC-hbr; config=140856e500; sizeLength=13; indexLength=3; indexDeltaLength=3; Profile=1;\n"
 //                        + "a=control:streamid=1\n"
-                , addr.getHostString());
+                );
 
         o.headers().add(RtspHeaderNames.CONTENT_TYPE, "application/sdp");
         o.content().writeCharSequence(sdp, CharsetUtil.UTF_8);
