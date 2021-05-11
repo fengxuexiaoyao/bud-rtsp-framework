@@ -13,7 +13,7 @@ public class HeartBeatServerHandler extends ChannelInboundHandlerAdapter {
 
 	    @Override
 	    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-	    	log.debug("已经{}秒未收到或未发送给客户端的消息了！", RtspConfig.rtcpIdletime);
+	    	log.debug("已经{}秒未收到或未发送给客户端的消息了！", RtspConfig.rtcpIdletime_);
 	        
 	        if (evt instanceof IdleStateEvent){
 	            IdleStateEvent event = (IdleStateEvent)evt;

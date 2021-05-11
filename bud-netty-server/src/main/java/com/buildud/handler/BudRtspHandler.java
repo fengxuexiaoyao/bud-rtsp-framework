@@ -5,6 +5,7 @@ import com.buildud.config.RtspConfig;
 import com.buildud.exception.BudNettyServerException;
 import com.buildud.queue.*;
 import com.buildud.service.IBudCodeService;
+import com.buildud.tools.IpUtils;
 import com.buildud.tools.RtspUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -136,6 +137,7 @@ public class BudRtspHandler extends SimpleChannelInboundHandler<FullHttpRequest>
 
     private void setup(ChannelHandlerContext ctx,FullHttpResponse o , FullHttpRequest r) throws BudNettyServerException {
         String transport = r.headers().get(RtspHeaderNames.TRANSPORT);
+        log.debug(">>>>>"+transport);
         transport = transport.toLowerCase();
         String uri = r.uri();
         String[] strlist = transport.split(";");
@@ -161,7 +163,7 @@ public class BudRtspHandler extends SimpleChannelInboundHandler<FullHttpRequest>
 
                     //设置回复地址及参数
                     o.headers().add(RtspHeaderNames.TRANSPORT,
-                            r.headers().get(RtspHeaderNames.TRANSPORT)+String.format(";source=127.0.0.1;server_port=%d-%d", RtspConfig.rtpPort, RtspConfig.rtpPort+1)+";ssrc=" + videoSsrc);
+                            r.headers().get(RtspHeaderNames.TRANSPORT)+String.format(";source="+ IpUtils.getLocalHostIp()+";server_port=%d-%d", RtspConfig.rtpPort_, RtspConfig.rtpPort_+1)+";ssrc=" + videoSsrc);
 
                     break;
 //                            }
@@ -219,7 +221,7 @@ public class BudRtspHandler extends SimpleChannelInboundHandler<FullHttpRequest>
 //            BudSendRtpThread sendRtpThread = new BudSendRtpThread(rtspQueueBean,dstVideoRtpAddr,rtpChannel);
 //            sendRtpThread.start();
         }else{
-            String filePath = RtspConfig.playFilePath+ File.separator+ RtspUtils.getPalyVideoPath(r);
+            String filePath = RtspConfig.playFilePath_+ File.separator+ RtspUtils.getPalyVideoPath(r);
             File f = new File(filePath);
             if (!f.exists()||!f.isFile()){
                 o.setStatus(new HttpResponseStatus(553, "Play File Not Exists"));

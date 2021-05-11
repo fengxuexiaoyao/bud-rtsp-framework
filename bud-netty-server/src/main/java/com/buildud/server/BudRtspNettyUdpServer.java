@@ -37,6 +37,8 @@ public class BudRtspNettyUdpServer implements ApplicationListener<ApplicationSta
 
     @Autowired
     private IBudCodeService codeService;
+    @Autowired
+    private RtspConfig RtspConfig;
 
     public static void initUdp(EventLoopGroup group)
     {
@@ -86,9 +88,9 @@ public class BudRtspNettyUdpServer implements ApplicationListener<ApplicationSta
         ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.ADVANCED);
 
         EventLoopGroup listenGrp  = new NioEventLoopGroup(1);
-        EventLoopGroup workGrp = new NioEventLoopGroup(RtspConfig.workerGroup);
+        EventLoopGroup workGrp = new NioEventLoopGroup(RtspConfig.getWorkerGroup());
         initUdp(workGrp);
-        createUdp(RtspConfig.rtpPort);
+        createUdp(RtspConfig.getRtpPort());
         /**
          * ServerBootstrap 是一个启动NIO服务的辅助启动类
          */
@@ -113,7 +115,7 @@ public class BudRtspNettyUdpServer implements ApplicationListener<ApplicationSta
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 socketChannel.pipeline()
-                        .addLast(new IdleStateHandler(0, 0, RtspConfig.rtspIdletime, TimeUnit.SECONDS))//5秒内既没有读，也没有写，则关闭连接
+                        .addLast(new IdleStateHandler(0, 0, RtspConfig.getRtcpIdletime(), TimeUnit.SECONDS))//5秒内既没有读，也没有写，则关闭连接
                         .addLast(new RtspDecoder())
                         .addLast(new RtspEncoder())
                         .addLast(new HttpObjectAggregator(64 * 1024))
@@ -126,7 +128,7 @@ public class BudRtspNettyUdpServer implements ApplicationListener<ApplicationSta
             /**
              * 绑定端口，同步等待成功
              */
-            ChannelFuture f = serverBootstrap.bind(RtspConfig.rtspPort).sync();
+            ChannelFuture f = serverBootstrap.bind(RtspConfig.getRtspPort()).sync();
             /**
              * 等待服务器监听端口关闭
              */

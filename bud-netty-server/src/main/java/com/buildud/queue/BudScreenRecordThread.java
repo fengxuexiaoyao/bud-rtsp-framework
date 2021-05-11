@@ -43,11 +43,11 @@ public class BudScreenRecordThread extends Thread {
         BudScreenRecordFrameGrabber grabber = null;
         BudScreenRecordFrameRecorder recorder = null;
         try {
-            grabber = new BudScreenRecordFrameGrabber(RtspConfig.fps);
+            grabber = new BudScreenRecordFrameGrabber(RtspConfig.fps_);
             grabber.start();
 
             BudByteArrayOutputStream out = new BudByteArrayOutputStream(dudQueueBean);
-            recorder = new BudScreenRecordFrameRecorder(out,RtspConfig.screenWidth,RtspConfig.screenHeigth,RtspConfig.fps);
+            recorder = new BudScreenRecordFrameRecorder(out,RtspConfig.screenWidth,RtspConfig.screenHeigth,RtspConfig.fps_);
             recorder.start();
 
             Frame frame = null;

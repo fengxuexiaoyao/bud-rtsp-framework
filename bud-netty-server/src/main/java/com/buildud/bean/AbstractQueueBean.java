@@ -44,4 +44,5 @@ public abstract class AbstractQueueBean<E>{
 
     public abstract InetSocketAddress getDstVideoRtpAddr();
     public abstract Channel getSendChannel();
+    public abstract String getCanelType();
 }

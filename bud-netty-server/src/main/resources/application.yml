@@ -13,12 +13,14 @@ server:
   port: 80
 
 netty:
-  rtsp-port: 54000
+  rtsp-port: 554
+  rtsp-tcp-port: 6793
   rtsp-idletime: 600
-  rtp-port: 554
+  rtp-port: 54000
   rtp-idletime: 10
   rtcp-idletime: 10
-  worker-group: 5
+  listen-group: 2
+  worker-group: 4
   play-file-path: D:\\
   fps: 30
-  mtu: 1400
+  mtu: 1442

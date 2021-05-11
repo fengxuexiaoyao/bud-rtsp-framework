@@ -177,7 +177,7 @@ public class BudCodeServiceImpl implements IBudCodeService {
             }
             //最后遗留的nalu单元
             if (upEndData!=null&&upEndData.length>0){
-                byte[] nalu = unshellNalu(upEndData);
+//                byte[] nalu = unshellNalu(upEndData);
                 naluToRtp(upEndData,dudQueueBean,sendChannel);
             }
             log.debug("file size:"+alllength);
@@ -207,8 +207,8 @@ public class BudCodeServiceImpl implements IBudCodeService {
         int iLen = nalu.length;
         //由于fu_identifier和fu_header会替换原有的头部，所以nalu尾部剩余数需要减1
         iLen--;
-        int sliceNum = iLen/ RtspConfig.mtu;
-        int endSliceLength = iLen%RtspConfig.mtu;
+        int sliceNum = iLen/ RtspConfig.mtu_;
+        int endSliceLength = iLen%RtspConfig.mtu_;
         if (endSliceLength>0){
             sliceNum++;
         }
@@ -243,7 +243,7 @@ public class BudCodeServiceImpl implements IBudCodeService {
         boolean mark = false;
 
         while (i<sliceNum){
-            int start = i*RtspConfig.mtu+1;
+            int start = i*RtspConfig.mtu_+1;
 
             byte[] dest = null;
             if (i==0) {
@@ -253,9 +253,9 @@ public class BudCodeServiceImpl implements IBudCodeService {
                 fu_header = (byte) (0x80 + nalu_type);
                 //由于是分包的开始，所以这个分包的字节长度为mtu
                 //再加上fu_identifier和fu_header两个字节，整个组成nalu分片包数据。
-                bb = ByteBuffer.allocate(RtspConfig.mtu + 2);
+                bb = ByteBuffer.allocate(RtspConfig.mtu_ + 2);
                 //用于保存nalu分包数据
-                dest = new byte[RtspConfig.mtu];
+                dest = new byte[RtspConfig.mtu_];
             }else if((i+1)==sliceNum){
                 //当前分包为结束包，设置mark为true。
                 mark = true;
@@ -273,9 +273,9 @@ public class BudCodeServiceImpl implements IBudCodeService {
                 fu_header = (byte) (0x00 + nalu_type);
                 //由于是中间包，所以这个分包的字节长度为mtu
                 //再加上fu_identifier和fu_header两个字节，整个组成nalu分片包数据。
-                bb = ByteBuffer.allocate(RtspConfig.mtu + 2);
+                bb = ByteBuffer.allocate(RtspConfig.mtu_ + 2);
                 //用于保存nalu分包数据
-                dest = new byte[RtspConfig.mtu];
+                dest = new byte[RtspConfig.mtu_];
             }
             //设置fu_identifier
             bb.put(fu_identifier);
@@ -303,7 +303,7 @@ public class BudCodeServiceImpl implements IBudCodeService {
         dudQueueBean.autoIncrementTime();
 
         try {
-            Thread.sleep(1000/RtspConfig.fps);
+            Thread.sleep(1000/RtspConfig.fps_);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -322,8 +322,8 @@ public class BudCodeServiceImpl implements IBudCodeService {
 
         int iLen = nalu.length;
 
-        int sliceNum = iLen/ RtspConfig.mtu;
-        int endSliceLength = iLen%RtspConfig.mtu;
+        int sliceNum = iLen/ RtspConfig.mtu_;
+        int endSliceLength = iLen%RtspConfig.mtu_;
         if (endSliceLength>0){
             sliceNum++;
         }
@@ -353,7 +353,7 @@ public class BudCodeServiceImpl implements IBudCodeService {
             if (isAutoTime){
                 dudQueueBean.autoIncrementTime();
                 try {
-                    Thread.sleep(1000/RtspConfig.fps);
+                    Thread.sleep(1000/RtspConfig.fps_);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

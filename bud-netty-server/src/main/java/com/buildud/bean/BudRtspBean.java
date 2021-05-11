@@ -22,6 +22,8 @@ public class BudRtspBean<E> extends AbstractQueueBean<E>{
     private InetSocketAddress dstVideoRtpAddr;
     private Channel sendChannel;
 
+    private final String canelType = "UDP";
+
     /**
      * naluQueue 通道数据是否写入结束
      */
@@ -219,7 +221,7 @@ public class BudRtspBean<E> extends AbstractQueueBean<E>{
     public void autoIncrementTime(){
         //90000为H264编码的时钟频率
         //时钟频率除以帧率，用于计算时间推进长度。
-        this.time+=(90000/ RtspConfig.fps);
+        this.time+=(90000/ RtspConfig.fps_);
     }
 
     @Override
@@ -246,5 +248,10 @@ public class BudRtspBean<E> extends AbstractQueueBean<E>{
     @Override
     public Channel getSendChannel() {
         return sendChannel;
+    }
+
+    @Override
+    public String getCanelType() {
+        return canelType;
     }
 }
