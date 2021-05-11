@@ -190,4 +190,20 @@ public class RtspUtils {
         }
     }
 
+    public static boolean isNaluStart(byte[] nalu){
+        if (nalu==null||nalu.length<1){
+            return false;
+        }
+        if ((nalu[0] == 0x00 &&
+                nalu[1] == 0x00 &&
+                nalu[2] == 0x00 &&
+                nalu[3] == 0x01)||
+                (nalu[0] == 0x00 &&
+                 nalu[1] == 0x00 &&
+                 nalu[2] == 0x01)) {
+            return true;
+        }
+        return false;
+    }
+
 }

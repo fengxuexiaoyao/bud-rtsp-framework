@@ -37,26 +37,53 @@ public class BudByteArrayOutputStream extends ByteArrayOutputStream {
     @Override
     public synchronized void write(byte b[], int off, int len) {
         log.debug("length>>"+b.length);
-        if (b.length==4096){
+        if (!RtspUtils.isNaluStart(b)){
             list.add(b);
-            size+=4096;
+            size+=b.length;
             return;
         }
-        size += b.length;
-        list.add(b);
-        byte[] decodeByte = new byte[size];
-        int i = 0;
-        for (byte[] by:list){
-            System.arraycopy(by, 0, decodeByte, i, by.length);
-            i+=by.length;
+
+        if (list.size()>0){
+            byte[] decodeByte = new byte[size];
+            int i = 0;
+            for (byte[] by:list){
+                System.arraycopy(by, 0, decodeByte, i, by.length);
+                i+=by.length;
+            }
+            list.clear();
+            size=0;
+
+            try {
+                dudQueueBean.getByteQueue().put(decodeByte);
+            } catch (InterruptedException e) {
+                log.debug(e.getMessage(),e.getCause());
+            }
         }
 
-        list.clear();
-        size=0;
-        try {
-            dudQueueBean.getByteQueue().put(decodeByte);
-        } catch (InterruptedException e) {
-            log.debug(e.getMessage(),e.getCause());
-        }
+        size += b.length;
+        list.add(b);
+/**
+ * if (b.length==4096){
+ list.add(b);
+ size+=4096;
+ return;
+ }
+ size += b.length;
+ list.add(b);
+ byte[] decodeByte = new byte[size];
+ int i = 0;
+ for (byte[] by:list){
+ System.arraycopy(by, 0, decodeByte, i, by.length);
+ i+=by.length;
+ }
+
+ list.clear();
+ size=0;
+ try {
+ dudQueueBean.getByteQueue().put(decodeByte);
+ } catch (InterruptedException e) {
+ log.debug(e.getMessage(),e.getCause());
+ }
+ */
     }
 }
